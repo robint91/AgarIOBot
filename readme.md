@@ -10,3 +10,7 @@ Requirements:
 * requests
 * pygame 1.9.1
 
+How to run
+-------------
+
+* python main.py
