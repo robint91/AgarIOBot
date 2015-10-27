@@ -94,7 +94,7 @@ class AgarBot:
                 i.append(value['id'])
                 dm , tg = self.findBestTarget(blobs, value, i, depth-1, size)
                 d  += dm
-                if d < maxdist and size*0.79 > value['size']:
+                if d < maxdist and size*0.79 > value['size'] and  "rtheunis" not in value['name']:
                     maxdist = d
                     target = value
 
@@ -204,10 +204,17 @@ class AgarBot:
             dmin = 1000
             ax = 0
             ay = 0
+            feed = False;
+            feed_target = None
             for key, value in blobs.iteritems():
                 if key not in mineblobs:
-                    if me['size']*0.79 < value['size'] and not value['virus']:
-                        d = self.distance(me, value) - value['size']/2 - me['size']/2
+                    d = self.distance(me, value) - value['size'] - me['size']
+                    if "rtheunis" in value['name'] and  "bot" not in value['name']:
+                        print value['name']
+                        if d < 300:
+                            feed = True;
+                            feed_target = value;
+                    elif me['size']*0.79 < value['size'] and not value['virus']:
                         if d < 600:
                             plot.drawCircleEasy(me, value['x'], value['y'], value['size']+20, AgarPlot.PINK)
                             x,y = self.vector(self.heading(me, value),1)
@@ -228,7 +235,17 @@ class AgarBot:
             ####################################################################
             #    Movement
             ####################################################################
+            if(feed):
+                goal = "Feed"
+                xoff = feed_target['x'] - me['x']
+                yoff = feed_target['y'] - me['y']
+                dirOff = atan2(yoff,xoff)
+                xoff -= cos(dirOff) * 300
+                yoff -= sin(dirOff) * 300
+                io.move(feed_target['x']+xoff,feed_target['x']+yoff)
+                plot.drawCircleEasy(me, feed_target['x']+xoff,feed_target['x']+yoff, feed_target['size']+20, AgarPlot.BLUE)
 
+                io.eject()
             if self.avoid:
                 goal = "avoid"
                 ax,ay = self.vector(atan2(ay,ax),300)

@@ -16,12 +16,12 @@ def getAgarIOToken():
 
 
 if __name__ == "__main__":
-    host, port, token = getAgarIOToken()
-    plot = AgarPlot()
-    #io = AgarIO("ws://newbies.servebeer.com:443", None)
-    print "Connecting to " + "ws://"+str(host)+":"+str(port)
-    io = AgarIO("ws://"+str(host)+":"+str(port), token)
-    bot = AgarBot("ussr")
+    plot = AgarPlot(True)
+    io = AgarIO("ws://newbies.servebeer.com:443", None)
+    #host, port, token = getAgarIOToken()
+	#print "Connecting to " + "ws://"+str(host)+":"+str(port)
+    #io = AgarIO("ws://"+str(host)+":"+str(port), token)
+    bot = AgarBot("rtheunis_bot")
     io.onUpdate += lambda io: bot.run(io, plot)
 
     io.run()
